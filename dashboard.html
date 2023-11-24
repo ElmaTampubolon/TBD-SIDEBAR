@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        /* Styling untuk dashboard */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f1f1f1;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .widget {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .widget h2 {
+            margin-top: 0;
+        }
+
+        .widget p {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Perpustakaan</h1>
+        <h1>Universitas Udayana</h1>
+        <div class="widget">
+            <h2>Selamat Datang !<?php echo $username; ?></h2>
+            <p>This is your dashboard.</p>
+        </div>
+
+        <div class="widget">
+            <h2>Profil</h2>
+            <p>Jumlah Pengguna : 420</p>
+        </div>
+
+        <div class="widget">
+            <h2>Koleksi Buku</h2>
+            <p>Jumlah Koleksi Buku : 5100</p>
+        </div>
+    </div>
+</body>
+</html>

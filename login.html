@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masuk</title>
+  <link rel="stylesheet" type="text/css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #f1f1f1;
+    }
+
+    h1 {
+      text-align: center;
+      background: #333333;
+      color: white;
+    }
+
+    h2 {
+      margin-left: 5px;
+    }
+
+    ol {
+      margin-left: 15px;
+      font-family: Times New Roman, sans-serif;
+    }
+
+    li {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Masuk</h1>
+
+  <div class="columns mt-5">
+    <div class="column is-half">
+      <form id="editProfileForm">
+        <div class="field">
+          <label class="label">Nim</label>
+          <div class="control">
+            <input type="text" class="input" id="nimInput" placeholder="2205550000">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Nama</label>
+          <div class="control">
+            <input type="text" class="input" id="namaInput" placeholder="Nama">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Prodi</label>
+          <div class="control">
+            <input type="text" class="input" id="prodiInput" placeholder="prodi">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Fakultas</label>
+          <div class="control">
+            <input type="text" class="input" id="fakultasInput" placeholder="Fakultas">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Status</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="statusSelect">
+                <option value="Aktif">Aktif</option>
+                <option value="NonAktif">NonAktif</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <button type="submit" class="button is-success">Save</button>
+          </div>
+        </div>
+      </form>
+
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <!-- Add the necessary scripts -->
+  <script src="Addprofile.js"></script>
+  <script src="https://unpkg.com/react/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
+
+  <script>
+    const { useState, useEffect } = React;
+    const { useNavigate, useParams } = ReactRouterDOM;
+
+    const EditProfile = () => {
+      const [nim, setNim] = useState("");
+      const [nama, setNama] = useState("");
+      const [prodi, setProdi] = useState("");
+      const [fakultas, setFakultas] = useState("");
+      const [status, setStatus] = useState("Tidak");
+      const navigate = useNavigate();
+      const { id } = useParams();
+
+      useEffect(() => {
+        getProfileById();
+      }, []);
+
+      const getProfileById = async () => {
+        const response = await axios.get(`http://localhost:5000/profiles/${id}`);
+        setNim(response.data.nim);
+        setNama(response.data.nama);
+        setProdi(response.data.prodi);
+        setFakultas(response.data.fakultas);
+        setStatus(response.data.status);
+      };
+
+      const updateProfile = async (e) => {
+        e.preventDefault();
+        try {
+          await axios.patch(`http://localhost:5000/profiles/${id}`, {
+            nim: document.getElementById("nimInput").value,
+            nama: document.getElementById("namaInput").value,
+            prodi: document.getElementById("prodiInput").value,
+            fakultas: document.getElementById("fakultasInput").value,
+            status: document.getElementById("statusSelect").value,
+          });
+          navigate("/");
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      const form = document.getElementById('editProfileForm');
+      form.addEventListener('submit', updateProfile);
+
+      return null;
+    };
+
+    ReactDOM.render(<EditProfile />, document.getElementById('result'));
+  </script>
+</body>
+
+</html>
